@@ -1,0 +1,101 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('../images/backgraound2.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+}
+
+.container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+h2 {
+    color: white;
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    width: 100%;
+}
+
+.cerrar-gestor-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 12px; /* Bordes redondeados */
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.cerrar-gestor-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.icon-button {
+    background: none; /* Fondo transparente */
+    border: none; /* Sin bordes */
+    padding: 0; /* Sin padding */
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}
+
+.table-container {
+    width: 80%; /* Ajusta el tamaño de la tabla aquí */
+    max-width: 800px;
+    margin: 20px 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid white;
+    height: 40px; /* Altura de las celdas */
+}
+
+th {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+h2, p {
+    color: white;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}

@@ -1,0 +1,145 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Continuo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.2.0-beta/noty.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.2.0-beta/noty.min.js"></script>
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+        h2, h3 {
+            color: #333;
+        }
+        div {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        .btn-edit {
+            background-color: #28a745;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+    {% if messages %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                {% for message in messages %}
+                new Noty({
+                    text: "{{ message|escapejs }}",
+                    type: 'success',
+                    layout: 'topRight',
+                    timeout: 3000,
+                    progressBar: true,
+                }).show();
+                {% endfor %}
+            });
+        </script>
+    {% endif %}
+
+
+
+    <div>
+        <a href="{% url 'cerrar_inventario' %}" style="font-weight: bold;">Cerrar Inventario</a>
+    </div>
+
+    <div>
+        <h2>Inventario Continuo</h2>
+
+        {% if items_by_area %}
+            {% for area, items in items_by_area.items %}
+                <h3>{{ area }}</h3>
+
+                <p><strong>Porcentaje de productos restante del área:</strong> 
+                    {{ porcentajes_por_area|get_item:area|default:"No disponible" }}%
+                </p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del Producto</th>
+                            <th>Categoría</th>
+                            <th>Fecha de Creación</th>
+                            <th>Cantidad Suministrada</th>
+                            <th>Cantidad Actual</th>
+                            <th>Porcentaje Restante</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td>{{ item.producto.nombre }}</td>
+                            <td>{{ item.producto.categoria.nombre }}</td>
+                            <td>{{ item.fecha_creacion|date:"Y-m-d" }}</td>
+                            <td>{{ item.cantidad_inicial }}</td>
+                            <td>{{ item.cantidad_actual }}</td>
+                            <td>{{ item.porcentaje_restante }}%</td>
+                            <td>    
+                                <div class="buttons">
+                                    <a href="{% url 'inventario_continuo_update' item.id %}" class="btn btn-edit">Actualizar</a>
+                                    <a href="{% url 'inventario_continuo_delete' item.id %}" class="btn btn-delete">Eliminar</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+        {% else %}
+            <p>No hay productos en el inventario.</p>
+        {% endif %}
+
+        <a href="{% url 'inventario_continuo_create' %}" style="font-weight: bold;">Agregar Producto</a>
+    </div>
+
+</body>
+</html>

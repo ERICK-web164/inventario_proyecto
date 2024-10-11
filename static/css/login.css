@@ -1,0 +1,127 @@
+body {
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.logo-container {
+    margin-right: 200px;
+}
+
+.logo-container img {
+    max-width: 250px;
+}
+
+.login-box {
+    background: rgba(255, 255, 255, 0.1); /* Transparencia total */
+    backdrop-filter: blur(3px); /* Desenfoca el fondo */
+    border: 2px solid #ffffff; /* Borde blanco */
+    padding: 45px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: 250px;
+    width: 100%;
+}
+
+.login-header {
+    font-size: 30px;
+    text-align: center;
+    margin-top: 10px; 
+    margin-bottom: -30px;
+    
+    
+}
+
+.login-header h1 {
+    font-size: 24px;
+    color: #ffffff;
+    margin-top: -15px; /* Ajusta este valor para acercar o alejar del campo de contraseña */
+    margin-bottom: 60px; /* Ajusta este valor para definir la distancia al siguiente elemento */
+}
+
+.input-group {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.input-group label {
+    font-size: 17px;
+    color: #ffffff;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group .input-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.input-group input[type="text"],
+.input-group input[type="password"] {
+    width: calc(100% - 34px); /* Ajusta el ancho del input */
+    padding: 10px;
+    border: none;
+    border-bottom: 3px solid #ffffff;
+    background: transparent;
+    color: #f7f5f5;
+    font-size: 16px;
+}
+
+.input-group input[type="text"]:focus,
+.input-group input[type="password"]:focus {
+    outline: none;
+    border-bottom: 1px solid #f1eded;
+}
+
+.input-group .icon {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-top: -15px; /* Ajusta este valor para acercar o alejar del campo de contraseña */
+    margin-bottom: 30px; /* Ajusta este valor para definir la distancia al siguiente elemento */
+    color: #f3eeee;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 8px; /* Espacio entre el checkbox y el texto */
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #a8c9ee;
+    
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Inventario</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    {% load static %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .card {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        .image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            max-width: 200px;  /* Limitar ancho máximo */
+            max-height: 200px; /* Limitar altura máxima */
+            width: auto;       /* Ajuste automático del ancho */
+            height: auto;      /* Ajuste automático de la altura */
+            border-radius: 8px; /* Bordes redondeados */
+            object-fit: cover; /* Ajusta la imagen sin distorsionar */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        a.btn {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        a.btn:hover {
+            background-color: #0056b3;
+        }
+        .action-buttons {
+            display: flex; /* Utiliza flexbox para alinear los botones */
+            gap: 10px; /* Espacio entre botones */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Gestionar Inventario: {{ inventario.pedido.nombre_pedido }}</h2>
+
+        <!-- Mostrar la imagen del pedido con el tamaño limitado -->
+        <div class="image-container">
+            <p><strong>Imagen del pedido:</strong></p>
+            {% if inventario.pedido.imagen and inventario.pedido.imagen.name != '' %}
+                <img src="{% static 'pedido/' %}{{ inventario.pedido.imagen.name|cut:'pedido/' }}" alt="{{ inventario.pedido.nombre_pedido }}">
+            {% else %}
+                <img src="{% static 'images/modelo.jpg' %}" alt="Imagen por defecto">
+            {% endif %}
+        </div>
+        {% if messages %}
+            <script>
+                {% for message in messages %}
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: "{{ message|escapejs }}",
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+                {% endfor %}
+            </script>
+        {% endif %}
+        <!-- Mostrar productos por área -->
+        {% if productos_por_area %}
+            {% for area, productos in productos_por_area.items %}
+                <h3>Área: {{ area }}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            
+                            <th>Cantidad Suministrada</th>
+                            <th>Cantidad Actual</th>
+                            <th>Porcentaje Restante</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto_inventario in productos %}
+                        <tr>
+                            <td>{{ producto_inventario.producto.nombre }}</td>
+                            <td>{{ producto_inventario.producto.categoria }}</td>
+                            
+                            <td>{{ producto_inventario.cantidad_suministrada }}</td>
+                            <td>{{ producto_inventario.cantidad_actual }}</td>
+                            <td>{{ producto_inventario.porcentaje_restante|floatformat:2 }}%</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{% url 'editar_producto_inventario' producto_inventario.id %}" class="btn btn-warning">Editar</a>
+                                    <a href="{% url 'eliminar_producto_inventario' producto_inventario.id %}" class="btn btn-danger">Eliminar</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+        {% else %}
+            <p>No hay productos en este inventario.</p>
+        {% endif %}
+        
+        <a href="{% url 'inventario_bajo_demanda_list' %}" class="btn btn-secondary">Salir del inventario</a>
+    </div>
+
+</body>
+</html>

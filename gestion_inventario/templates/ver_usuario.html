@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Usuario</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+            /* Puedes mantener la fuente Arial si lo deseas */
+            font-family: Arial, sans-serif;
+        }
+        .user-photo img {
+            width: 200px; /* Ajustado para coincidir con el primer código */
+            height: auto;
+            border-radius: 8px; /* Añadido para coincidir con el estilo de las imágenes en "Detalle del Pedido" */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Añadido para sombra */
+            margin-bottom: 20px;
+        }
+        .user-info p {
+            margin: 5px 0;
+        }
+        .card {
+            margin-top: 20px;
+        }
+        .card-header {
+            background-color: #007bff; /* Mismo color que en "Detalle del Pedido" */
+            color: white;
+        }
+        .card-title {
+            margin-bottom: 0;
+        }
+        .volver-btn {
+            margin-top: 30px;
+        }
+        .links a {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Mostrar mensajes usando SweetAlert2 -->
+{% if messages %}
+<script>
+    {% for message in messages %}
+    Swal.fire({
+        icon: 'success',
+        title: 'Operación exitosa',
+        text: "{{ message|escapejs }}",
+        timer: 3000,
+        showConfirmButton: false
+    });
+    {% endfor %}
+</script>
+{% endif %}
+
+<div class="container mt-5">
+    <!-- Título principal -->
+    <h2 class="text-center mb-4">Información del Usuario - {{ usuario.username }}</h2>
+
+    <!-- Información del Usuario en tarjeta -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="card-title mb-0">Detalles del Usuario</h4>
+        </div>
+        <div class="card-body">
+            <div class="row pedido-detalle">
+                <div class="col-md-4 text-center user-photo">
+                    {% if usuario.foto %}
+                        <img src="{% static usuario.foto.name %}" alt="Foto de perfil">
+                    {% else %}
+                        {% if usuario.genero == 'F' %}
+                            <img src="{% static 'images/mujer.jpg' %}" alt="Foto de perfil predeterminada de mujer">
+                        {% elif usuario.genero == 'M' %}
+                            <img src="{% static 'images/varon.jpg' %}" alt="Foto de perfil predeterminada de varón">
+                        {% else %}
+                            <p>El usuario no ha subido una foto de perfil.</p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Nombre de Usuario:</strong> {{ usuario.username }}</p>
+                    <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+                    <p><strong>Apellido:</strong> {{ usuario.apellido }}</p>
+                    <p><strong>Correo Electrónico:</strong> {{ usuario.correo_electronico }}</p>
+                    <p><strong>Edad:</strong> {{ usuario.edad }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><i class="bi bi-gender-{{ usuario.genero|lower }}"></i> <strong>Género:</strong> {{ usuario.get_genero_display }}</p>
+                    <p><i class="bi bi-geo-alt"></i> <strong>Dirección:</strong> {{ usuario.direccion }}</p>
+                    <p><i class="bi bi-building"></i> <strong>Ciudad:</strong> {{ usuario.ciudad }}</p>
+                    <p><i class="bi bi-calendar"></i> <strong>Fecha de Nacimiento:</strong> {{ usuario.fecha_nacimiento }}</p>
+                    <p><i class="bi bi-credit-card"></i> <strong>Número de DNI:</strong> {{ usuario.numero_dni }}</p>
+                    <p><i class="bi bi-clock"></i> <strong>Fecha de Creación:</strong> {{ usuario.fecha_creacion }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <div class="links text-center">
+                <a href="{% url 'actualizar_usuario' usuario.pk %}" class="btn btn-warning"><i class="bi bi-pencil"></i> Editar</a>
+                <a href="{% url 'eliminar_usuario' usuario.pk %}" class="btn btn-danger"><i class="bi bi-trash"></i> Eliminar</a>
+                <a href="{% url 'listar_usuarios' %}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Volver a la Lista</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS y dependencias -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

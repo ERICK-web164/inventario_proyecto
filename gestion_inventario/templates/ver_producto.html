@@ -1,0 +1,89 @@
+{% load static %} <!-- Asegúrate de incluir esto al inicio -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Producto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        .product-details {
+            margin-top: 20px;
+        }
+        .product-details dt {
+            font-weight: bold;
+            color: #555;
+            margin-top: 10px;
+        }
+        .product-details dd {
+            margin: 0;
+            padding: 0;
+        }
+        img {
+            max-width: 200px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Detalles del Producto</h2>
+
+    <dl class="product-details">
+        <dt>Nombre:</dt>
+        <dd>{{ producto.nombre }}</dd>
+
+        <dt>Descripción:</dt>
+        <dd>{{ producto.descripcion }}</dd>
+
+        <dt>Precio Unitario:</dt>
+        <dd>{{ producto.precio_unitario }}</dd>
+
+        <dt>Categoría:</dt>
+        <dd>{{ producto.categoria }}</dd>
+
+        <dt>Proveedor:</dt>
+        <dd>{{ producto.proveedor }}</dd>
+
+        <dt>Tipo de Inventario:</dt>
+        <dd>{{ producto.tipo_inventario }}</dd>
+
+        <dt>Área:</dt>
+        <dd>{{ producto.area }}</dd>
+
+        <dt>Fecha de Creación:</dt>
+        <dd>{{ producto.fecha_creacion }}</dd>
+
+        <dt>Imagen del Producto:</dt>
+        <dd>
+            {% if producto.imagen %}
+                <img src="{% static 'producto/' %}{{ producto.imagen.name|cut:'producto/' }}" alt="{{ producto.nombre }}">
+            {% else %}
+                <img src="{% static 'images/producto.jpg' %}" alt="Imagen por defecto">
+            {% endif %}
+        </dd>
+    </dl>
+
+    <a href="{% url 'producto_list' %}" class="btn btn-secondary">Volver</a>
+</div>
+
+</body>
+</html>

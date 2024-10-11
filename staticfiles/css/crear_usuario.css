@@ -1,0 +1,111 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('../images/backgraound2.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+}
+
+.container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+h2 {
+    color: white;
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    color: white;
+}
+
+.form-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 100%;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form p {
+    margin-bottom: 20px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form select,
+form textarea {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid white;
+    color: white;
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+form input[type="text"]::placeholder,
+form input[type="email"]::placeholder,
+form input[type="number"]::placeholder,
+form select::placeholder,
+form textarea::placeholder {
+    color: white;
+}
+
+form select {
+    color: white; /* Color del texto en el desplegable */
+    background: transparent;
+}
+
+form select option {
+    color: black; /* Color de las opciones del desplegable */
+    background: white; /* Fondo de las opciones del desplegable */
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.icon-button {
+    background: none; /* Fondo transparente */
+    border: none; /* Sin bordes */
+    padding: 0; /* Sin padding */
+    display: inline-block;
+}
+
+.icon {
+    width: 90px;
+    height: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}

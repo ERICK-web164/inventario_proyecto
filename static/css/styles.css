@@ -1,0 +1,16 @@
+/* static/css/styles.css */
+@media print {
+    /* Estilos específicos para impresión */
+    .btn {
+        display: none !important;
+    }
+    /* Aquí puedes agregar otros estilos que necesites */
+}
+@page {
+    @top-center {
+        content: "Información General de Pedidos";
+    }
+    @bottom-right {
+        content: "Página " counter(page);
+    }
+}

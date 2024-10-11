@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Áreas</title>
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .btn-container {
+            margin-bottom: 20px;
+        }
+        .btn-container a {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">Lista de Áreas</h2>
+
+    <!-- Tabla de Áreas -->
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre del Área</th>
+                <th>Descripción</th>
+                <th>Función</th>
+                <th>Jefe del Área</th>
+                <th>Instrumentos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for area in areas %}
+            <tr>
+                <td>{{ area.id }}</td>
+                <td>{{ area.nombre }}</td>
+                <td>{{ area.descripcion }}</td>
+                <td>{{ area.funcion }}</td>
+                <td>{{ area.jefe }}</td>
+                <td>{{ area.instrumentos }}</td>
+                <td>
+                    <a href="{% url 'area_update' pk=area.id %}" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Botón para volver -->
+    <div class="text-center mt-4">
+        <a href="{% url 'admin_home' %}" class="btn btn-secondary">Volver</a>
+    </div>
+</div>
+
+<!-- Bootstrap JS y dependencias -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

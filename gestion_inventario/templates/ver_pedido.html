@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Pedido</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .pedido-detalle {
+            margin: 20px 0;
+        }
+        .pedido-img {
+            width: 200px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .pedido-info p {
+            margin: 5px 0;
+        }
+        .productos-table {
+            margin-top: 20px;
+        }
+        .volver-btn {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <!-- Título principal -->
+    <h2 class="text-center mb-4">Detalle del Pedido - {{ pedido.nombre_pedido }}</h2>
+
+    <!-- Detalle del pedido en tarjeta -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="card-title mb-0">Detalles del Pedido</h4>
+        </div>
+        <div class="card-body">
+            <div class="row pedido-detalle">
+                <div class="col-md-4">
+                    <p><strong>ID del Pedido:</strong> {{ pedido.id }}</p>
+                    <p><strong>Cliente:</strong> {{ pedido.cliente.nombre }}</p>
+                    <p><strong>Nombre del Pedido:</strong> {{ pedido.nombre_pedido }}</p>
+                    <p><strong>Descripción:</strong> {{ pedido.descripcion }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><i class="bi bi-cash"></i> <strong>Monto Total:</strong> ${{ pedido.monto_total|floatformat:2 }}</p>
+                    <p><i class="bi bi-credit-card"></i> <strong>Modo de Pago:</strong> <span class="badge badge-info">{{ pedido.modo_pago }}</span></p>
+                    <p><i class="bi bi-calendar"></i> <strong>Fecha de Entrega:</strong> {{ pedido.fecha_entrega }}</p>
+                    <p><i class="bi bi-hourglass-split"></i> <strong>Estado:</strong> <span class="badge badge-{{ pedido.estado|lower }}">{{ pedido.estado }}</span></p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <strong>Imagen del Pedido:</strong>
+                    <br>
+                    {% if pedido.imagen and pedido.imagen.name != '' %}
+                        <img src="{% static 'pedido/' %}{{ pedido.imagen.name|cut:'pedido/' }}" alt="{{ pedido.nombre_pedido }}" class="pedido-img mt-2">
+                    {% else %}
+                        <img src="{% static 'images/modelo.jpg' %}" alt="Imagen por defecto" class="pedido-img mt-2">
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row pedido-info mt-4">
+                <div class="col-md-12">
+                    <p><strong>Detalles:</strong> {{ pedido.detalles }}</p>
+                    <p><strong>Fecha de Creación:</strong> {{ pedido.fecha_creacion }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Productos seleccionados en tabla -->
+    <h3 class="mt-4">Productos Seleccionados:</h3>
+    <table class="table table-hover table-bordered productos-table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Producto</th>
+                <th>Precio Unitario</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in productos_con_subtotal %}
+            <tr>
+                <td>{{ item.producto.nombre }}</td>
+                <td>${{ item.producto.precio_unitario|floatformat:2 }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>${{ item.subtotal|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Botón de Volver -->
+    <div class="text-center volver-btn">
+        <a href="{% url 'gestor_pedidos' cliente_id=pedido.cliente.id %}" class="btn btn-primary btn-lg">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+</div>
+
+<!-- Bootstrap JS y dependencias -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+{% load static %}
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Producto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .details {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .product-image img {
+            max-width: 100%;
+            height: auto;
+            max-height: 200px;
+            border-radius: 4px;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        button, .icon-button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .icon-button img {
+            height: 24px;
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        function loadProductDetails() {
+            const selectedProductId = document.getElementById('producto-select').value;
+            if (selectedProductId) {
+                fetch(`/gestion/api/productos/detalles/${selectedProductId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('descripcion').innerText = data.descripcion;
+                        document.getElementById('precio_unitario').innerText = data.precio_unitario;
+                        document.getElementById('categoria').innerText = data.categoria;
+                        document.getElementById('proveedor').innerText = data.proveedor;
+                        document.getElementById('area').innerText = data.area;
+                        document.getElementById('imagen_producto').src = data.imagen_url;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching product details:', error);
+                    });
+            } else {
+                document.getElementById('descripcion').innerText = 'Selecciona un producto';
+                document.getElementById('precio_unitario').innerText = '-';
+                document.getElementById('categoria').innerText = '-';
+                document.getElementById('proveedor').innerText = '-';
+                document.getElementById('area').innerText = '-';
+                document.getElementById('imagen_producto').src = "{% static 'images/producto.jpg' %}";
+            }
+        }
+    </script>
+    
+</head>
+<body>
+    <div class="container">
+        <h2>Nuevo Producto en Inventario Continuo</h2>
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="error-list">
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ field }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+          
+            <div class="form-group">
+                <label for="producto">Seleccionar Producto</label>
+                <select id="producto-select" name="producto" onchange="loadProductDetails()">
+                    <option value="">Seleccionar un producto</option>
+                    {% for producto in productos_continuos %}
+                        <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="details">
+                <h3>Detalles del Producto</h3>
+                <p><strong>Descripción:</strong> <span id="descripcion">Selecciona un producto</span></p>
+                <p><strong>Precio Unitario:</strong> <span id="precio_unitario">-</span></p>
+                <p><strong>Categoría:</strong> <span id="categoria">-</span></p>
+                <p><strong>Proveedor:</strong> <span id="proveedor">-</span></p>
+                <p><strong>Área:</strong> <span id="area">-</span></p>
+                <div class="product-image">
+                    <img id="imagen_producto" src="{% static 'images/producto.jpg' %}" alt="Imagen del producto">
+                </div>
+            </div>
+
+            <!-- Solo Cantidad Suministrada, sin cantidad actual -->
+            <div class="form-group">
+                <label for="cantidad_suministrada">Cantidad Suministrada</label>
+                <input type="number" name="cantidad_inicial" id="cantidad_inicial" min="1" required>
+            </div>
+
+            <div class="buttons">
+                <button type="submit">Guardar</button>
+                <button type="button" onclick="window.location.href='{% url 'inventario_continuo_list' %}'">
+                    Volver
+                </button>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>

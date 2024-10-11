@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INICIO DE SESIÓN</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'dist/bundle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <style>
+        body {
+            background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .input-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .input-group label {
+            font-size: 17px;
+            color: #ffffff;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group .input-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        .input-group input[type="text"],
+        .input-group input[type="password"] {
+            width: calc(100% - 34px); /* no tocar estos parametros */
+            padding: 10px;
+            border: none;
+            border-bottom: 3px solid #ffffff;
+            background: transparent;
+            color: #f7f5f5;
+            font-size: 16px;
+        }
+        .input-group input[type="text"]:focus,
+        .input-group input[type="password"]:focus {
+            outline: none;
+            border-bottom: 1px solid #f1eded;
+        }
+        .input-group .icon {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+        </div>
+        <div>
+            <div class="login-box">
+                <div class="login-header">
+                    <h1>Iniciar Sesión</h1>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <label for="username">Usuario</label>
+                        <div class="input-wrapper">
+                            {{ form.username }}
+                            <img src="{% static 'images/icono1.png' %}" alt="Icono de usuario" class="icon">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Contraseña</label>
+                        <div class="input-wrapper">
+                            {{ form.password }}
+                            <img src="{% static 'images/icono2.png' %}" alt="Icono de contraseña" class="icon">
+                        </div>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="remember_me_checkbox">
+                        <label for="remember_me_checkbox">Recordar Contraseña</label>
+                    </div>
+                    <button type="submit"><b>Acceder</b></button>
+                </form>
+            </div>
+            {% if error %}
+                <div class="error-message">{{ error }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <script src="{% static 'dist/bundle.js' %}"></script>
+</body>
+</html>

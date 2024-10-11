@@ -1,0 +1,173 @@
+{% load static %} 
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Producto en Inventario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .card {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            width: 200px; /* Ancho fijo para las etiquetas */
+            font-weight: bold;
+            color: #555;
+            margin-right: 20px; /* Espacio entre la etiqueta y el dato */
+        }
+        .form-group p,
+        .form-group input,
+        .form-group select {
+            margin: 0;
+            font-size: 16px;
+            color: #666;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group input {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+        }
+
+        .form-group input:focus {
+            background-color: #fff;
+            border-color: #007bff;
+        }
+
+        /* Estilos para la imagen del producto */
+        .product-image {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .product-image img {
+            max-width: 100%;
+            height: auto;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+            margin-left: 30px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            button,
+            a {
+                margin-top: 10px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Editar Producto en Inventario</h2>
+
+        <!-- Sección para la imagen del producto -->
+        <div class="product-image">
+            {% if producto_inventario.producto.imagen %}
+                <img src="/static/{{ producto_inventario.producto.imagen.name }}" alt="Imagen del producto">
+            {% else %}
+                <img src="{% static 'images/producto.jpg' %}" alt="Imagen predeterminada del producto">
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="producto">Producto:</label>
+            <p>{{ producto_inventario.producto.nombre }}</p>
+        </div>
+
+        <div class="form-group">
+            <label for="categoria">Categoría:</label>
+            <p>{{ producto_inventario.producto.categoria }}</p>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <p>{{ producto_inventario.producto.descripcion }}</p>
+        </div>
+
+        <div class="form-group">
+            <label for="cantidad_suministrada">Cantidad Suministrada:</label>
+            <p>{{ producto_inventario.cantidad_suministrada }}</p>
+        </div>
+
+        <!-- Campo editable para la cantidad actual -->
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="cantidad_actual">Cantidad Actual:</label>
+                {{ form.cantidad_actual }}
+            </div>
+
+            <div class="form-group mt-20">
+                <button type="submit">Guardar</button>
+                <a href="{{ request.META.HTTP_REFERER }}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

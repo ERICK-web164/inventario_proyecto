@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Pedidos - {{ cliente.nombre }}</title>
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        h2 {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .btn-container {
+            margin-bottom: 20px;
+        }
+        .btn-container a {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">Gestor de Pedidos - {{ cliente.nombre }}</h2>
+    <p class="text-center"><strong>Cliente ID:</strong> {{ cliente.id }}</p>
+
+    <!-- Botones de acción -->
+    <div class="btn-container text-center">
+        <a href="{% url 'nuevo_pedido' cliente_id=cliente.id %}" class="btn btn-success">Nuevo Pedido</a>
+        <a href="{% url 'cliente_list' %}" class="btn btn-secondary">Regresar</a>
+    </div>
+
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: "{{ message|escapejs }}",
+            timer: 3000,
+            showConfirmButton: false
+        });
+        {% endfor %}
+    </script>
+    {% endif %}
+
+    <!-- Tabla de pedidos -->
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Fecha de Creación</th>
+                <th>Fecha de Entrega</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in pedidos %}
+            <tr>
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.nombre_pedido }}</td>
+                <td>{{ pedido.fecha_creacion|date:"Y-m-d" }}</td>
+                <td>{{ pedido.fecha_entrega|date:"Y-m-d" }}</td>
+                <td>{{ pedido.estado}}</td>
+                <td>
+                    <a href="{% url 'ver_pedido' pedido.id %}" class="btn btn-info btn-sm">Ver</a>
+                    <a href="{% url 'modificar_pedido' pedido.id %}" class="btn btn-warning btn-sm">Modificar</a>
+                    <a href="{% url 'eliminar_pedido' pedido.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    <button id="cargar_inventario_{{ pedido.id }}" class="btn btn-primary btn-sm cargar-inventario-btn"
+                            data-pedido-id="{{ pedido.id }}">
+                        Cargar Inventario
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'inventario_bajo_demanda_list' %}" class="btn btn-info">Inventario Bajo Demanda</a>
+    </div>
+</div>
+
+<!-- Bootstrap JS y dependencias -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const botonesCargarInventario = document.querySelectorAll('.cargar-inventario-btn');
+
+        botonesCargarInventario.forEach(function(boton) {
+            boton.addEventListener('click', function() {
+                const pedidoId = this.dataset.pedidoId;
+
+                fetch(`/gestion/cargar_inventario/${pedidoId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Inventario cargado');
+                    } else if (data.status === 'already_loaded') {
+                        alert('El inventario ya está cargado para este pedido.');
+                    }
+                })
+                .catch(error => console.error('Error al cargar el inventario:', error));
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

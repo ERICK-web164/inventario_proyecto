@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Proveedores</title>
+    
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+        .btn-group {
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <!-- Mensajes usando SweetAlert2 -->
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+        Swal.fire({
+            icon: '{% if message.tags == "success" %}success{% else %}error{% endif %}',
+            title: "{% if message.tags == 'success' %}¡Éxito!{% else %}¡Error!{% endif %}",
+            text: "{{ message|escapejs }}",
+            timer: 3000,
+            showConfirmButton: false
+        });
+        {% endfor %}
+    </script>
+    {% endif %}
+
+    <!-- Título principal -->
+    <h1 class="text-center">Gestor de Proveedores</h1>
+
+    <!-- Botones de acción -->
+    <div class="text-center btn-group">
+        <a href="{% url 'registrar_proveedor' %}" class="btn btn-success btn-lg">Registrar Nuevo Proveedor</a>
+        <a href="{% url 'producto_list' %}" class="btn btn-danger btn-lg">Cerrar Gestor</a>
+    </div>
+
+    <!-- Tabla de proveedores -->
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Correo Electrónico</th>
+                <th>Persona de Contacto</th>
+                <th>RUC</th>
+                <th>Tipo de Proveedor</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proveedor in proveedores %}
+            <tr>
+                <td>{{ proveedor.nombre }}</td>
+                <td>{{ proveedor.direccion }}</td>
+                <td>{{ proveedor.telefono }}</td>
+                <td>{{ proveedor.correo_electronico }}</td>
+                <td>{{ proveedor.persona_contacto }}</td>
+                <td>{{ proveedor.ruc }}</td>
+                <td>{{ proveedor.get_tipo_proveedor_display }}</td>
+                <td>
+                    <!-- Agrupar botones en un contenedor btn-group -->
+                    <div class="btn-group" role="group" aria-label="Acciones">
+                        <!-- Botón para editar -->
+                        <a href="{% url 'editar_proveedor' proveedor.id %}" class="btn btn-warning btn-sm">Editar</a>
+                        
+                        <!-- Botón para eliminar con SweetAlert2 -->
+                        <a href="{% url 'proveedor_delete' proveedor.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </div>
+                </td>
+
+            {% empty %}
+            <tr>
+                <td colspan="8" class="text-center">No hay proveedores registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Script para SweetAlert2 para eliminar proveedor -->
+
+
+<!-- Bootstrap JS y dependencias -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

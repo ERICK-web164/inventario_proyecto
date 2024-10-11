@@ -1,0 +1,46 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mi Aplicación{% endblock %}</title>
+    {% load static %}
+    <!-- Enlace a archivos CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- Bloque adicional para incluir estilos específicos de cada página -->
+    {% block extra_head %}
+    {% endblock %}
+</head>
+<body>
+    <!-- Encabezado o barra de navegación -->
+    <header>
+        <nav>
+            <ul>
+                
+                <a href="{% url 'admin_home' %}" class="btn btn-primary">Volver</a>
+                <a href="{% url 'informacion_general_pedidos_pdf' %}" class="btn btn-primary">Descargar en PDF</a>
+
+                <!-- Agrega más enlaces según tus necesidades -->
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Contenido principal -->
+    <main>
+        {% block content %}
+        <!-- Aquí se insertará el contenido específico de cada página -->
+        {% endblock %}
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>&copy; 2024 Empresa Linea Deportiva NEW TEX. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Enlace a archivos JavaScript -->
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <!-- Bloque adicional para incluir scripts específicos de cada página -->
+    {% block extra_scripts %}
+    {% endblock %}
+</body>
+</html>

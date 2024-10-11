@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('../images/backgraound2.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+}
+
+.container {
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+.cerrar-inventario-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 12px; /* Bordes redondeados */
+    text-decoration: none;
+}
+
+.cerrar-inventario-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.icon-button {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: transform 0.3s ease;
+}
+
+.icon-button:hover {
+    transform: scale(1.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid white;
+}
+
+th {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+h2, h3, p {
+    color: white;
+}

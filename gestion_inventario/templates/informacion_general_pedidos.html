@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<style>
+    /* Estilos específicos para el PDF */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    h1, h2, h3 {
+        color: #333;
+    }
+    .cliente-section {
+        margin-bottom: 40px;
+    }
+    .inventario-card {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-top: 20px;
+    }
+    .inventario-header {
+        background-color: #f0f0f0;
+        padding: 10px;
+    }
+    .inventario-header.atrasado {
+        background-color: #f8d7da;
+    }
+    .inventario-details, .productos-section, .resumen-pedido {
+        padding: 10px;
+    }
+    .productos-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .productos-table th, .productos-table td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+    .productos-table th {
+        background-color: #e9ecef;
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+    ul li {
+        margin-bottom: 5px;
+    }
+    .page-break {
+        page-break-after: always;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center;">Información General de Pedidos</h1>
+
+<!-- Mostrar el porcentaje general de Abastecimiento de Pedidos -->
+<h2 style="text-align: center;">Abastecimiento de Pedidos: {{ porcentaje_abastecimiento }}%</h2>
+
+{% for cliente, inventarios in inventarios_por_cliente.items %}
+    <div class="cliente-section">
+        <h2>Cliente: {{ cliente.nombre }}</h2>
+
+        {% for inventario in inventarios %}
+            <!-- Tarjeta para cada inventario -->
+            <div class="inventario-card">
+                <!-- Encabezado del inventario -->
+                <div class="inventario-header {% if inventario.atrasado %}atrasado{% endif %}">
+                    <h3 style="margin: 0;">Pedido: {{ inventario.pedido.nombre_pedido }}</h3>
+                    <p>
+                        {% if inventario.atrasado %}
+                            <span style="color: red;">El pedido se pasó de la fecha de entrega</span>
+                        {% else %}
+                            <span style="color: green;">A tiempo</span>
+                        {% endif %}
+                    </p>
+                </div>
+
+                <!-- Detalles del inventario -->
+                <div class="inventario-details">
+                    <p><strong>Fecha de Creación:</strong> {{ inventario.fecha_creacion|date:"d/m/Y" }}</p>
+                    <p><strong>Fecha de Entrega:</strong> {{ inventario.pedido.fecha_entrega|date:"d/m/Y" }}</p>
+                    <p><strong>Días Restantes:</strong> {{ inventario.dias_restantes }}</p>
+                    <p><strong>Estado del Pedido:</strong> {{ inventario.pedido.estado }}</p>
+                    <p><strong>Porcentaje de Completado del Pedido:</strong> {{ inventario.porcentaje_completado }}%</p>
+                </div>
+
+                <!-- Sección de productos -->
+                <div class="productos-section">
+                    <h4>Porcentaje de Productos Restantes</h4>
+                    <!-- Tabla de productos -->
+                    <table class="productos-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Producto</th>
+                                <th>Área</th>
+                                <th>Cantidad Inicial (100%)</th>
+                                <th>Cantidad Actual</th>
+                                <th>Porcentaje Restante</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for producto_inventario in inventario.productos_inventario.all %}
+                                <tr>
+                                    <td>{{ producto_inventario.producto.nombre }}</td>
+                                    <td>{{ producto_inventario.producto.get_area_display }}</td>
+                                    <td>{{ producto_inventario.cantidad_suministrada }}</td>
+                                    <td>{{ producto_inventario.cantidad_actual }}</td>
+                                    <td>{{ producto_inventario.porcentaje_restante }}%</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Resumen del Pedido -->
+                <div class="resumen-pedido">
+                    <h4>Resumen General del Pedido</h4>
+                    <ul>
+                        <li><strong>Total Cantidad Inicial:</strong> {{ inventario.total_cantidad_inicial }}</li>
+                        <li><strong>Total Cantidad Actual:</strong> {{ inventario.total_cantidad_actual }}</li>
+                        <li><strong>Porcentaje de Productos Restantes:</strong> {{ inventario.porcentaje_productos_restantes }}%</li>
+                        <li><strong>Porcentaje de Avance del Pedido:</strong> {{ inventario.porcentaje_completado }}%</li>
+                        <li><strong>Valor Total de la Inversión:</strong> {{ inventario.pedido.inversion }}</li>
+                        <li><strong>Valor Actual de los Productos no efectuados (perdidos):</strong> {{ inventario.valor_actual_productos }}</li>
+                        <li><strong>Porcentaje de Valor Actual en Relación al Total:</strong> {{ inventario.porcentaje_valor_actual }}%</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Añadir salto de página después de cada inventario si es necesario -->
+            {% if not forloop.last %}
+                <div class="page-break"></div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}
+{% endblock %}

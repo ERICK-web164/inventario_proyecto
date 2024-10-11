@@ -1,0 +1,81 @@
+[
+    {
+      "model": "gestion_inventario.area",
+      "pk": 1,
+      "fields": {
+        "nombre": "Recepción",
+        "descripcion": "Área de recepción de materiales.",
+        "funcion": "Recepción y registro de materiales.",
+        "jefe": "Juan Pérez",
+        "instrumentos": "Computadora, Escáner"
+      }
+    },
+    {
+      "model": "gestion_inventario.area",
+      "pk": 2,
+      "fields": {
+        "nombre": "Diseño",
+        "descripcion": "Área de diseño gráfico.",
+        "funcion": "Creación de diseños para productos.",
+        "jefe": "Ana Gómez",
+        "instrumentos": "Computadoras, Software de Diseño"
+      }
+    },
+    {
+      "model": "gestion_inventario.area",
+      "pk": 3,
+      "fields": {
+        "nombre": "Sublimado",
+        "descripcion": "Área de sublimación de productos.",
+        "funcion": "Aplicación de diseños a productos.",
+        "jefe": "Carlos Rodríguez",
+        "instrumentos": "Prensas, Tintas"
+      }
+    },
+    {
+      "model": "gestion_inventario.area",
+      "pk": 4,
+      "fields": {
+        "nombre": "Confeccion",
+        "descripcion": "Área de sublimación de productos.",
+        "funcion": "Aplicación de diseños a productos.",
+        "jefe": "Carlos Rodríguez",
+        "instrumentos": "Prensas, Tintas"
+      }
+    },
+    {
+      "model": "gestion_inventario.area",
+      "pk": 5,
+      "fields": {
+        "nombre": "Vinilado",
+        "descripcion": "Área de sublimación de productos.",
+        "funcion": "Aplicación de diseños a productos.",
+        "jefe": "Carlos Rodríguez",
+        "instrumentos": "Prensas, Tintas"
+      }
+    },
+    {
+      "model": "gestion_inventario.area",
+      "pk": 6,
+      "fields": {
+        "nombre": "Bordado",
+        "descripcion": "Área de sublimación de productos.",
+        "funcion": "Aplicación de diseños a productos.",
+        "jefe": "Carlos Rodríguez",
+        "instrumentos": "Prensas, Tintas"
+      }
+    },
+    {
+      "model": "gestion_inventario.area",
+      "pk": 7,
+      "fields": {
+        "nombre": "Embalaje",
+        "descripcion": "Área de sublimación de productos.",
+        "funcion": "Aplicación de diseños a productos.",
+        "jefe": "Carlos Rodríguez",
+        "instrumentos": "Prensas, Tintas"
+      }
+    }
+    
+  ]
+  

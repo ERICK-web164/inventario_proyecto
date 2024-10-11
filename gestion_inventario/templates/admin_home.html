@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Home</title>
+    <style>
+        .container {
+            margin: 20px;
+        }
+        .welcome-header {
+            background: linear-gradient(135deg, #4c9aff, #00b4d8); /* Degradado de colores */
+            color: white;
+            padding: 20px;
+            border-radius: 10px; /* Bordes redondeados */
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            width: 50%; /* Ajusta el ancho al 80% del contenedor */
+            margin: 0 auto; /* Centra el cuadro horizontalmente */
+        }
+
+        .welcome-header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .welcome-header p {
+            font-size: 1.2rem;
+            margin-top: 0;
+            font-weight: 300;
+        }
+        
+        .buttons-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: -50px; /* Ajusta el espacio entre las columnas */
+            row-gap: 20px; /* Ajusta el espacio entre las filas, si lo necesitas */
+            margin-top: 20px;
+        }
+        .button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+        .button img {
+            width: 40%;
+            height: auto;
+            object-fit: cover;
+        }
+        /* Ajustes para el botón de Cerrar Sesión */
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px; /* Ajusta el tamaño del botón aquí */
+            padding: 5px;
+        }
+
+        .logout-button img {
+            width: 120%;  /* Ajusta el tamaño de la imagen del botón aquí */
+            height: auto;
+            object-fit: cover;
+        }
+
+        
+        .alert-messages {
+            margin-bottom: 20px;
+        }
+        .alert-messages div {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f2f2f2;
+            border-left: 4px solid #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logout-button">
+            <a href="{% url 'logout' %}" class="button">
+                <img src="{% static 'images/inter_cerrar.jpg' %}" alt="Cerrar Sesión">
+                
+            </a>        
+        </div>
+
+        <div class="welcome-header">
+            <h2>Bienvenido, {{ nombre_usuario }}: {{ rol }}</h2>
+            <p>Esta es la página principal para los administradores.</p>
+        </div>
+
+        <!-- Mensajes de alerta -->
+        <div class="alert-messages">
+            {% for mensaje, color in mensajes_alerta %}
+                <div role="alert" style="border-color: {{ color }};">
+                    {{ mensaje }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Botones de acción en dos columnas -->
+        <div class="buttons-container">
+            <a href="{% url 'listar_usuarios' %}" class="button">
+                <img src="{% static 'images/inter_usuario.jpg' %}" alt="Gestionar Usuarios">
+                
+            </a>
+
+            <a href="{% url 'inventario_continuo_list' %}" class="button">
+                <img src="{% static 'images/inter_continuo.jpg' %}" alt="Inventario Continuo">
+                
+            </a>
+
+            <a href="{% url 'cliente_list' %}" class="button">
+                <img src="{% static 'images/inter_cliente.jpg' %}" alt="Clientes">
+                
+            </a>
+
+            <a href="{% url 'producto_list' %}" class="button">
+                <img src="{% static 'images/inter_producto.jpg' %}" alt="Productos">
+                
+            </a>
+
+            <a href="{% url 'listar_areas' %}" class="button">
+                <img src="{% static 'images/inter_area.jpg' %}" alt="Ver información de Áreas">
+                
+            </a>
+
+            <a href="{% url 'inventario_bajo_demanda_list' %}" class="button">
+                <img src="{% static 'images/inter_demanda.jpg' %}" alt="Inventario Bajo Demanda">
+                
+            </a>
+
+            <a href="{% url 'exportar_actividad_excel' %}" class="button">
+                <img src="{% static 'images/inter_actividad.jpg' %}" alt="Descargar Actividad en Excel">
+                
+            </a>
+
+            <a href="{% url 'informacion_general_pedidos' %}" class="button">
+                <img src="{% static 'images/inter_reporte.jpg' %}" alt="Información General de Pedidos">
+                
+            </a>
+        </div>
+    </div>
+</body>
+</html>

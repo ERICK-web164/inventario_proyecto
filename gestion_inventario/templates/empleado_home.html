@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleado Home</title>
+    <!-- Importar Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Ajustes de tamaño de botones y espaciado que puedes modificar fácilmente */
+        .btn-custom {
+            padding: 10px 20px; /* Ajusta el tamaño del botón */
+            font-size: 16px; /* Ajusta el tamaño del texto dentro del botón */
+        }
+
+        .buttons img {
+            width: 300px; /* Ajusta el tamaño de las imágenes de los íconos */
+            height: 300px;
+        }
+
+        .btn-spacing {
+            margin-right: 20px; /* Ajusta la separación horizontal entre los botones */
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Cabecera con Bootstrap -->
+        <div class="row bg-light p-3 align-items-center">
+            <div class="col-md-9">
+                <h2 class="text-primary">Bienvenido, {{ nombre_usuario }}: {{ rol }}</h2>
+            </div>
+            <div class="col-md-3 text-right">
+                <!-- Botón de cerrar sesión simple con clases personalizadas -->
+                <a href="{% url 'logout' %}" class="btn btn-danger btn-custom">
+                    Cerrar Sesión
+                </a>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="main text-center my-4">
+            <p class="lead">Esta es la página principal para los empleados.</p>
+            <div class="buttons d-flex justify-content-center mt-4">
+                <!-- Botón 1 con clase personalizada para ajustar espaciado -->
+                <div class="btn btn-spacing">
+                    <a href="{% url 'inventario_continuo_list' %}">
+                        <img src="{% static 'images/continuo.png' %}" alt="Inventario Continuo" class="img-fluid">
+                    </a>
+                </div>
+                <!-- Botón 2 -->
+                <div class="btn">
+                    <a href="{% url 'inventario_bajo_demanda_list' %}">
+                        <img src="{% static 'images/bajodemanda.png' %}" alt="Inventario Bajo Demanda" class="img-fluid">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Importar Bootstrap JS (Opcional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

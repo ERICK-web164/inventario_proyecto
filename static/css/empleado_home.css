@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('../images/backgraound2.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+}
+
+.header {
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.header h2 {
+    color: white;
+    margin: 0;
+}
+
+.header p {
+    color: white;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+}
+
+.logout a {
+    margin-right: 10px;
+}
+
+.logout-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 16px;
+    border-radius: 12px; /* Bordes redondeados */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre icono y texto */
+}
+
+.logout-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.logout-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.button-container {
+    margin: 0 60px;      /*alejar las imagenes*/
+}
+
+.inventory-image {                /*ajustar las imagenes*/
+    width: 250px;
+    height: auto;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.inventory-image:hover {
+    transform: scale(1.05);
+}

@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Productos</title>
+    
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <style>
+        body {
+            background-color: #f4f4f9;
+        }
+        .header-title {
+            font-size: 2rem;
+            color: #343a40;
+        }
+        .header-actions {
+            margin-bottom: 20px;
+        }
+        .header-actions a {
+            margin-right: 10px;
+        }
+        .card {
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+        .btn-actions a {
+            margin-right: 5px;
+        }
+        .category-title {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <!-- Mensajes usando SweetAlert2 -->
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+        Swal.fire({
+            icon: '{% if message.tags == "success" %}success{% else %}error{% endif %}',
+            title: "{% if message.tags == 'success' %}¡Éxito!{% else %}¡Error!{% endif %}",
+            text: "{{ message|escapejs }}",
+            timer: 3000,
+            showConfirmButton: false
+        });
+        {% endfor %}
+    </script>
+    {% endif %}
+
+    <!-- Título principal -->
+    <h2 class="header-title text-center">Gestor de Productos</h2>
+
+    <!-- Botones de acciones -->
+    <div class="header-actions text-center">
+        <a href="{% url 'producto_create' %}" class="btn btn-success btn-lg">Nuevo Producto</a>
+        <a href="{% url 'categoria_create' %}" class="btn btn-primary btn-lg">Nueva Categoría</a>
+        <a href="{% url 'gestor_proveedor' %}" class="btn btn-info btn-lg">Proveedores</a>
+        <a href="{% url 'cerrar_gestor' %}" class="btn btn-danger btn-lg">Cerrar Gestor</a>
+    </div>
+
+    <!-- Productos por categoría -->
+    {% for categoria, productos in productos_por_categoria.items %}
+    <div class="card">
+        <!-- Título de categoría -->
+        <div class="category-title">
+            <h3>{{ categoria }}</h3>
+        </div>
+        <div class="card-body">
+            <!-- Tabla de productos -->
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Precio Unitario</th>
+                        <th>Tipo de Inventario</th>
+                        <th>Área</th>
+                        <th>Categoría</th>
+                        <th>Proveedor</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.id }}</td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.precio_unitario }}</td>
+                        <td>{{ producto.tipo_inventario }}</td>
+                        <td>{{ producto.area }}</td>
+                        <td>{{ producto.categoria }}</td>
+                        <td>{{ producto.proveedor }}</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Acciones">
+                                <a href="{% url 'producto_update' producto.id %}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="{% url 'producto_delete' producto.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                                <a href="{% url 'ver_producto' producto.id %}" class="btn btn-info btn-sm">Ver</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Script para SweetAlert2 para eliminar producto -->
+
+
+<!-- Bootstrap JS y dependencias -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

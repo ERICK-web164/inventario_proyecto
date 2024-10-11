@@ -1,0 +1,188 @@
+{% load custom_filters %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if object %}Editar{% else %}Crear{% endif %} Pedido</title>
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .card {
+            margin-top: 20px;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+        function actualizarSumaTotal() {
+            let sumaTotal = 0.0;
+            document.querySelectorAll('.producto-checkbox').forEach(function(checkbox) {
+                if (checkbox.checked) {
+                    const precio = parseFloat(checkbox.dataset.precio);
+                    const cantidad = parseInt(document.querySelector(`#cantidad_${checkbox.value}`).value) || 1;
+                    sumaTotal += precio * cantidad;
+                }
+            });
+            document.getElementById('total_calculado').value = sumaTotal.toFixed(2);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.producto-checkbox, .cantidad').forEach(function(element) {
+                element.addEventListener('change', actualizarSumaTotal);
+            });
+            actualizarSumaTotal();  // Calcular el total de los items al cargar la página
+        });
+    </script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="text-center mb-0">{% if object %}Editar{% else %}Crear{% endif %} Pedido</h2>
+        </div>
+        <div class="card-body">
+            <!-- Mostrar errores del formulario -->
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li><strong>{{ field }}:</strong> {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.nombre_pedido.id_for_label }}" class="form-label">{{ form.nombre_pedido.label }}</label>
+                        {{ form.nombre_pedido|add_class:"form-control" }}
+                        {{ form.nombre_pedido.errors }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.descripcion.id_for_label }}" class="form-label">{{ form.descripcion.label }}</label>
+                        {{ form.descripcion|add_class:"form-control" }}
+                        {{ form.descripcion.errors }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.imagen.id_for_label }}" class="form-label">{{ form.imagen.label }}</label>
+                        {{ form.imagen|add_class:"form-control" }}
+                        {{ form.imagen.errors }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="total_calculado" class="form-label">Suma Total Calculada (No Editable):</label>
+                        <input type="text" id="total_calculado" class="form-control" value="0" readonly>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.monto_total.id_for_label }}" class="form-label">{{ form.monto_total.label }}</label>
+                        {{ form.monto_total|add_class:"form-control" }}
+                        {{ form.monto_total.errors }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.inversion.id_for_label }}" class="form-label">{{ form.inversion.label }}</label>
+                        {{ form.inversion|add_class:"form-control" }}
+                        {{ form.inversion.errors }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.modo_pago.id_for_label }}" class="form-label">{{ form.modo_pago.label }}</label>
+                        {{ form.modo_pago|add_class:"form-control" }}
+                        {{ form.modo_pago.errors }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.fecha_entrega.id_for_label }}" class="form-label">{{ form.fecha_entrega.label }}</label>
+                        {{ form.fecha_entrega|add_class:"form-control" }}
+                        {{ form.fecha_entrega.errors }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="{{ form.detalles.id_for_label }}" class="form-label">{{ form.detalles.label }}</label>
+                        {{ form.detalles|add_class:"form-control" }}
+                        {{ form.detalles.errors }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Productos (Inventario Bajo Demanda):</label>
+                        {% for producto in form.fields.productos.queryset %}
+                            <div class="form-check">
+                                <input 
+                                <input 
+                                    type="checkbox" 
+                                    class="form-check-input producto-checkbox" 
+                                    data-precio="{{ producto.precio_unitario }}" 
+                                    value="{{ producto.pk }}" 
+                                    id="producto_{{ producto.pk }}"
+                                    name="productos"
+                                    {% if producto in form.instance.productos.all %}checked{% endif %}  
+                                >
+
+                                <label for="producto_{{ producto.pk }}" class="form-check-label">{{ producto.nombre }} - Precio: {{ producto.precio_unitario }}</label>
+                                
+                                <input 
+                                    type="number" 
+                                    class="form-control cantidad mt-2" 
+                                    id="cantidad_{{ producto.pk }}" 
+                                    name="cantidad_{{ producto.pk }}" 
+                                    min="1" 
+                                    value="{% for pp in productos_cantidades %}{% if pp.producto == producto %}{{ pp.cantidad }}{% endif %}{% empty %}1{% endfor %}" 
+                                >
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Mostrar el campo de estado si está en modo edición -->
+                {% if object %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.estado.id_for_label }}" class="form-label">{{ form.estado.label }}</label>
+                            {{ form.estado|add_class:"form-control" }}
+                            {{ form.estado.errors }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Botones de acción -->
+                <button type="submit" class="btn btn-success">{% if object %}Guardar cambios{% else %}Crear Pedido{% endif %}</button>
+                <a href="{% url 'gestor_pedidos' cliente_id=cliente_id %}" class="btn btn-secondary">Volver</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS y dependencias -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

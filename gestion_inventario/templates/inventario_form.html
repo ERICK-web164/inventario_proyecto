@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario Formulario</title>
+    <link rel="stylesheet" href="{% static 'css/inventario_formulario.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>{{ view.title }}</h2>
+        <div class="form-container">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="buttons">
+                    <button type="submit" class="icon-button">
+                        <img src="{% static 'images/icono7.png' %}" alt="Guardar" class="icon">
+                    </button>
+                    <a href="{% url 'admin_home' %}" class="icon-button">
+                        <img src="{% static 'images/icono8.png' %}" alt="Cancelar" class="icon">
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
